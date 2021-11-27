@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Edit Track</title>
+</head>
+<body>
+<h3>Edit Track</h3>
+<p>Enter anything which you want to edit:</p>
+<a th:href="@{/track}">HomePage</a>
+<form th:action="@{/track/edit}" th:method="post" th:object="${track}" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" th:value="${track.getName()}">
+    <label>Artis:</label>
+    <input type="text" th:field="*{artist}" th:value="${track.getArtist()}">
+    <label>Type:</label>
+    <select th:field="*{type}">
+        <option th:value="Pop">Pop</option>
+        <option th:value="RnB">R&B</option>
+        <option th:value="RAP">RAP</option>
+    </select>
+    <label>TrackLink:</label>
+    <p th:text="${track.getTrackLink().getOriginalFilename()}"></p>
+        <input type="file" accept=".mp3,.m4p,.vav,.ogg" id="sound" th:field="*{trackLink}"/><br>
+    <button type="submit">Edit</button>
+    <button type="reset">Clear</button>
+</form>
+<p th:object="${message}" th:utext="message"></p>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+<head>
+    <meta charset="UTF-8">
+    <title>Home TrackList</title>
+</head>
+<body>
+<h3>Track List</h3>
+<p>
+    <a th:href="@{/track/create}">Add new Track</a>
+</p>
+<table id="tracks">
+    <legend>Track list</legend>
+    <thread>
+        <tr>
+            <th>Name</th>
+            <th>artis</th>
+            <th>type</th>
+            <th>soundLink</th>
+            <th>action</th>
+        </tr>
+    </thread>
+    <tbody>
+    <tr th:each="track : ${trackList}">
+        <td th:text="${track.name}"></td>
+        <td th:text="${track.artist}"></td>
+        <td th:text="${track.type}"></td>
+        <td>
+            <audio controls>
+            <source th:src="@{'/sound/' + ${track.trackLink}}">
+        </audio>
+        </td>
+        <td>
+            <a th:href="@{/track/{id}/delete(id=${track.id})}">Delete</a>
+        </td>
+        <td>
+            <a th:href="@{/track/{id}/edit(id=${track.id})}">Edit</a>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>

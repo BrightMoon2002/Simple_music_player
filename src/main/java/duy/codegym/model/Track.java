@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String artist;
     private String type;
@@ -16,7 +16,7 @@ public class Track {
     public Track() {
     }
 
-    public Track(int id, String name, String artist, String type, String trackLink) {
+    public Track(Long id, String name, String artist, String type, String trackLink) {
         this.id = id;
         this.name = name;
         this.artist = artist;
@@ -31,11 +31,11 @@ public class Track {
         this.trackLink = trackLink;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -3,7 +3,7 @@ package duy.codegym.model;
 import org.springframework.web.multipart.MultipartFile;
 
 public class TrackForm {
-    private int id;
+    private Long id;
     private String name;
     private String artist;
     private String type;
@@ -19,7 +19,7 @@ public class TrackForm {
         this.trackLink = trackLink;
     }
 
-    public TrackForm(int id, String name, String artist, String type, MultipartFile trackLink) {
+    public TrackForm(Long id, String name, String artist, String type, MultipartFile trackLink) {
         this.id = id;
         this.name = name;
         this.artist = artist;
@@ -27,18 +27,18 @@ public class TrackForm {
         this.trackLink = trackLink;
     }
 
-    public TrackForm(int id, String name, String artist, String type) {
+    public TrackForm(Long id, String name, String artist, String type) {
         this.id = id;
         this.name = name;
         this.artist = artist;
         this.type = type;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

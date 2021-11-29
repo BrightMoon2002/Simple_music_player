@@ -17,8 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/track")
@@ -31,6 +32,7 @@ public class TrackController {
 
     @GetMapping("")
     public String showList(Model model) {
+
         model.addAttribute("trackList", trackService.findAll());
         return "/home";
     }
@@ -60,23 +62,23 @@ public class TrackController {
     }
 
     @GetMapping ("/{id}/delete")
-    public ModelAndView showDeleteForm(@PathVariable int id) {
-        Track track = trackService.findOne(id);
-        ModelAndView model = new ModelAndView("/delete", "track", track);
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
+        Optional<Track> track = trackService.findById(id);
+        ModelAndView model = new ModelAndView("/delete", "track", track.get());
         return model;
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView showEditForm(@PathVariable int id) throws IOException {
-        Track track = trackService.findOne(id);
+    public ModelAndView showEditForm(@PathVariable Long id) throws IOException {
+        Optional<Track> track = trackService.findById(id);
         // tạo ra file moi co duong dan den file da luu trong serve
-        File file = new File(fileUpload + track.getTrackLink());
+        File file = new File(fileUpload + track.get().getTrackLink());
         // tha file vao luong
         FileInputStream input = new FileInputStream(file);
         // tạo multipartfile mới (name,c ontenttype chi là chú thích nhưng bắt buộc phải có)
         MultipartFile multipartFile = new MockMultipartFile("abc",
                 file.getName(), "mp3,mp4,.../audio", IOUtils.toByteArray(input));
-        TrackForm trackForm = new TrackForm(track.getId(), track.getName(), track.getArtist(), track.getType(), multipartFile);
+        TrackForm trackForm = new TrackForm(track.get().getId(), track.get().getName(), track.get().getArtist(), track.get().getType(), multipartFile);
         ModelAndView model = new ModelAndView("/edit");
         model.addObject("track", trackForm);
         model.addObject("message", "Edit successful");
@@ -85,7 +87,7 @@ public class TrackController {
 
     @PostMapping("/delete")
     public ModelAndView removeTrack(@ModelAttribute Track track) {
-        trackService.delete(track.getId());
+        trackService.remove(track.getId());
         ModelAndView model = new ModelAndView("redirect:/track");
         return model;
     }
@@ -100,7 +102,7 @@ public class TrackController {
             e.printStackTrace();
         }
         Track track = new Track(trackForm.getId(), trackForm.getName(), trackForm.getArtist(), trackForm.getType(), fileName);
-        trackService.update(track);
+        trackService.save(track);
         ModelAndView model = new ModelAndView("/edit");
         model.addObject("trackForm", trackForm);
         model.addObject("message", "edit new track successful");
